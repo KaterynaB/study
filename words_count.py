@@ -4,8 +4,16 @@ import sys
 import operator
 import collections
 
-# TODO: write pydoc (Extract list of words in file).
+
 def get_words_from_file(path):
+    """Extracts words from file.
+
+    Args:
+      path: string representing path to file.
+
+    Yields:
+      string representing a word extracted from the file.
+    """
     with open(path, 'r') as words_file:
         for line in words_file:
             words = line.split()
@@ -13,6 +21,18 @@ def get_words_from_file(path):
                 yield word
 
 def get_most_freq_words(path, n):
+    """Gets n most frequent words with count.
+
+    Words are read from the file.
+
+    Args:
+      path: string representing path to file.
+      n: integer indicating how many words should be included in the result.
+
+    Returns:
+      list of tuples mapping word to it's count within the file. For example
+      [('white', 2), ('a', 2), ('shot', 1)].
+    """
     words_count = collections.defaultdict(int)
     for word in get_words_from_file(path):
         words_count[word] += 1
