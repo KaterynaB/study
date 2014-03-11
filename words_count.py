@@ -5,6 +5,26 @@ import operator
 import collections
 
 
+def get_most_freq_words(words, n):
+  """Gets n most frequent words with count.
+
+  Args:
+    words: iterable of strings.
+    n: integer indicating how many words should be included in the result.
+
+  Returns:
+    list of tuples mapping word to it's count within the list. For example
+    [('white', 2), ('a', 2), ('shot', 1)].
+  """
+  words_count = collections.defaultdict(int)
+  for word in words:
+    words_count[word] += 1
+
+  # Return n most frequently used words.
+  words_and_counts = words_count.items()
+  words_and_counts.sort(key=operator.itemgetter(1), reverse=True)
+  return words_and_counts[:n]
+
 def get_words_from_file(path):
   """Extracts words from file.
 
@@ -20,8 +40,7 @@ def get_words_from_file(path):
       for word in words:
         yield word
 
-
-def get_most_freq_words(path, n):
+def get_most_freq_words_from_file(path, n):
   """Gets n most frequent words with count.
 
   Words are read from the file.
@@ -34,14 +53,7 @@ def get_most_freq_words(path, n):
     list of tuples mapping word to it's count within the file. For example
     [('white', 2), ('a', 2), ('shot', 1)].
   """
-  words_count = collections.defaultdict(int)
-  for word in get_words_from_file(path):
-    words_count[word] += 1
-
-  # Return n most frequently used words.
-  words_and_counts = words_count.items()
-  words_and_counts.sort(key=operator.itemgetter(1), reverse=True)
-  return words_and_counts[:n]
+  return get_most_freq_words(get_words_from_file(path), n)
 
 if __name__ == "__main__":
   if len(sys.argv) == 3:
@@ -53,4 +65,4 @@ if __name__ == "__main__":
     print "Please provide arguments"
     exit(-1)
 
-  print get_most_freq_words(sys.argv[1], n)
+  print get_most_freq_words_from_file(sys.argv[1], n)
